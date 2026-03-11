@@ -5,14 +5,12 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MessageThread } from "@/components/messages/message-thread";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversation } from "@/hooks/use-conversations";
 
 export default function MobileMessagePage() {
   const params = useParams();
   const conversationId = params.id as string;
-  const conversation = useMessageStore((state) =>
-    state.getConversationById(conversationId)
-  );
+  const { data: conversation } = useConversation(conversationId);
 
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">

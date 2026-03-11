@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 import { Sparkles, Copy, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useOutcomeStore } from "@/stores/outcome-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { useOutcomesByPatient } from "@/hooks/use-outcomes";
+import { usePatient } from "@/hooks/use-patients";
 import { outcomeDefinitions } from "@/data/outcomes";
 import type { MeasureType } from "@/types/outcomes";
 
@@ -23,9 +23,8 @@ function computeTrend(
 }
 
 export function AIProgressSummary({ patientId }: { patientId: string }) {
-  const allOutcomes = useOutcomeStore((s) => s.outcomes);
-  const outcomes = useMemo(() => allOutcomes.filter((o) => o.patientId === patientId), [allOutcomes, patientId]);
-  const patient = usePatientStore((s) => s.getPatientById(patientId));
+  const { data: outcomes = [] } = useOutcomesByPatient(patientId);
+  const { data: patient } = usePatient(patientId);
   const [copied, setCopied] = useState(false);
 
   const summaryText = useMemo(() => {

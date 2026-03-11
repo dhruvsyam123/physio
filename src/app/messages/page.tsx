@@ -1,23 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MessageSquare } from "lucide-react";
 import { ConversationList } from "@/components/messages/conversation-list";
 import { MessageThread } from "@/components/messages/message-thread";
-import { useMessageStore } from "@/stores/message-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { useConversations, useCreateConversation } from "@/hooks/use-conversations";
+import { usePatients } from "@/hooks/use-patients";
 
 export default function MessagesPage() {
+  return (
+    <Suspense>
+      <MessagesPageInner />
+    </Suspense>
+  );
+}
+
+function MessagesPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const conversations = useMessageStore((state) => state.conversations);
-  const addConversation = useMessageStore((state) => state.addConversation);
-  const getPatientById = usePatientStore((state) => state.getPatientById);
+  const { data: conversations = [], isLoading } = useConversations();
+  const createConversation = useCreateConversation();
+  const { data: patients = [] } = usePatients();
 
-  const [selectedId, setSelectedId] = useState<string | undefined>(
-    conversations[0]?.id
-  );
+  const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+
+  // Set default selection when conversations load
+  useEffect(() => {
+    if (!selectedId && conversations.length > 0) {
+      setSelectedId(conversations[0].id);
+    }
+  }, [conversations, selectedId]);
 
   // Handle patientId query param — find or create conversation
   useEffect(() => {
@@ -32,7 +45,7 @@ export default function MessagesPage() {
     }
 
     // Create new conversation for this patient
-    const patient = getPatientById(patientId);
+    const patient = patients.find((p) => p.id === patientId);
     if (!patient) return;
 
     const newConv = {
@@ -45,9 +58,10 @@ export default function MessagesPage() {
       unreadCount: 0,
       messages: [],
     };
-    addConversation(newConv);
-    setSelectedId(newConv.id);
-  }, [searchParams, conversations, getPatientById, addConversation]);
+    createConversation.mutate(newConv, {
+      onSuccess: () => setSelectedId(newConv.id),
+    });
+  }, [searchParams, conversations, patients, createConversation]);
 
   function handleSelect(conversationId: string) {
     // On mobile, navigate to dedicated page

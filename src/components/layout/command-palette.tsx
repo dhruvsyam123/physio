@@ -24,8 +24,8 @@ import {
   CommandItem,
   CommandSeparator,
 } from "@/components/ui/command";
-import { usePatientStore } from "@/stores/patient-store";
-import { useExerciseStore } from "@/stores/exercise-store";
+import { usePatients } from "@/hooks/use-patients";
+import { useExercises } from "@/hooks/use-exercises";
 
 const pages = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/" },
@@ -46,8 +46,8 @@ const quickActions = [
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const patients = usePatientStore((s) => s.patients);
-  const exercises = useExerciseStore((s) => s.exercises);
+  const { data: patients = [] } = usePatients();
+  const { data: exercises = [] } = useExercises();
   const [search, setSearch] = useState("");
 
   useEffect(() => {

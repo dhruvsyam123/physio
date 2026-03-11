@@ -11,12 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useReferralStore } from "@/stores/referral-store";
+import { useReferrals } from "@/hooks/use-referrals";
 import { ReferralCard } from "@/components/referrals/referral-card";
 import type { Referral } from "@/types";
 
 export default function ReferralsPage() {
-  const referrals = useReferralStore((s) => s.referrals);
+  const { data: referrals = [], isLoading } = useReferrals();
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
   const filtered =

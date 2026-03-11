@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateContent } from "@/lib/ai";
 import { SOAP_SUGGEST_PROMPT } from "@/lib/ai-prompts";
+import { auth } from "@/lib/auth";
 
 function getFallbackResponse(subjective: string, objective: string) {
   const isLowerBack =
@@ -82,6 +83,11 @@ function getFallbackResponse(subjective: string, objective: string) {
 }
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { subjective, objective, patientContext } = await req.json();
 

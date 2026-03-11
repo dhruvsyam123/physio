@@ -4,10 +4,10 @@ import Link from "next/link";
 import { AlertCircle, MessageSquare, CalendarPlus } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatients } from "@/hooks/use-patients";
 
 export function PendingFollowups() {
-  const patients = usePatientStore((state) => state.patients);
+  const { data: patients = [], isLoading } = usePatients();
 
   // Patients whose lastVisit is more than 7 days ago from today (2026-03-11)
   const sevenDaysAgo = new Date("2026-03-04T00:00:00Z");
@@ -41,7 +41,19 @@ export function PendingFollowups() {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        {pendingPatients.length === 0 ? (
+        {isLoading ? (
+          <div className="space-y-3 py-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="flex flex-col gap-1 flex-1">
+                  <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+                  <div className="h-3 w-24 rounded bg-muted animate-pulse" />
+                  <div className="h-3 w-40 rounded bg-muted animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : pendingPatients.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
             No pending follow-ups.
           </p>

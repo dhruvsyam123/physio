@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePatientStore } from "@/stores/patient-store";
+import { useCreatePatient } from "@/hooks/use-patients";
 import { toast } from "sonner";
 import type { Patient } from "@/types";
 
@@ -40,7 +40,7 @@ type PatientFormValues = z.infer<typeof patientSchema>;
 
 export default function NewPatientPage() {
   const router = useRouter();
-  const addPatient = usePatientStore((s) => s.addPatient);
+  const createPatient = useCreatePatient();
 
   const {
     register,
@@ -69,9 +69,7 @@ export default function NewPatientPage() {
   const genderValue = watch("gender");
 
   function onSubmit(data: PatientFormValues) {
-    const id = `p${Date.now()}`;
-    const newPatient: Patient = {
-      id,
+    const newPatient = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -80,7 +78,7 @@ export default function NewPatientPage() {
       gender: data.gender,
       address: data.address,
       condition: data.condition,
-      status: "new",
+      status: "new" as const,
       insuranceProvider: data.insuranceProvider || undefined,
       insuranceNumber: data.insuranceNumber || undefined,
       emergencyContact: data.emergencyContact || undefined,
@@ -89,9 +87,12 @@ export default function NewPatientPage() {
       totalSessions: 0,
       completionRate: 0,
     };
-    addPatient(newPatient);
-    toast.success("Patient created successfully");
-    router.push(`/patients/${id}`);
+    createPatient.mutate(newPatient as Patient, {
+      onSuccess: (created) => {
+        toast.success("Patient created successfully");
+        router.push(`/patients/${created.id}`);
+      },
+    });
   }
 
   return (

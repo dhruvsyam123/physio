@@ -24,7 +24,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useNoteStore } from "@/stores/note-store";
+import { useCreateNote } from "@/hooks/use-notes";
 import { buildPatientContext } from "@/lib/ai-context";
 import { BillingCodes } from "@/components/notes/billing-codes";
 import { toast } from "sonner";
@@ -187,7 +187,7 @@ export function SOAPNoteEditor({
   onSaved,
   initialObjective,
 }: SOAPNoteEditorProps) {
-  const addNote = useNoteStore((state) => state.addNote);
+  const createNote = useCreateNote();
 
   // AI states
   const [isGenerating, setIsGenerating] = useState(false);
@@ -429,15 +429,18 @@ export function SOAPNoteEditor({
       signed,
       createdAt: new Date().toISOString(),
     };
-    addNote(note);
-    if (signed) {
-      setIsSigned(true);
-      toast.success("SOAP note signed and locked");
-    }
-    if (!signed) {
-      toast.success("SOAP note saved as draft");
-      onSaved?.();
-    }
+    createNote.mutate(note, {
+      onSuccess: () => {
+        if (signed) {
+          setIsSigned(true);
+          toast.success("SOAP note signed and locked");
+        }
+        if (!signed) {
+          toast.success("SOAP note saved as draft");
+          onSaved?.();
+        }
+      },
+    });
   }
 
   function handleSignConfirm() {

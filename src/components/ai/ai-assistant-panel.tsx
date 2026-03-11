@@ -26,7 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useUIStore } from "@/stores/ui-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatients } from "@/hooks/use-patients";
 import { ChatMessage } from "./chat-message";
 import { buildPatientContext } from "@/lib/ai-context";
 import type { AIMessage } from "@/types";
@@ -78,10 +78,10 @@ export function AIAssistantPanel() {
   const toggleAiPanel = useUIStore((s) => s.toggleAiPanel);
   const activePage = useUIStore((s) => s.activePage);
   const selectedPatientId = useUIStore((s) => s.selectedPatientId);
-  const getPatientById = usePatientStore((s) => s.getPatientById);
+  const { data: patients = [] } = usePatients();
 
   const selectedPatient = selectedPatientId
-    ? getPatientById(selectedPatientId)
+    ? patients.find((p) => p.id === selectedPatientId)
     : undefined;
 
   const [messages, setMessages] = useState<AIMessage[]>([]);
@@ -247,16 +247,13 @@ export function AIAssistantPanel() {
           </div>
 
           {/* Context badge */}
-          <div className="flex items-center gap-2 pt-1">
-            {selectedPatient && (
+          {selectedPatient && (
+            <div className="flex items-center gap-2 pt-1">
               <Badge variant="secondary" className="text-[10px]">
                 Patient: {selectedPatient.firstName} {selectedPatient.lastName}
               </Badge>
-            )}
-            <Badge variant="outline" className="text-[10px]">
-              {activePage || "dashboard"}
-            </Badge>
-          </div>
+            </div>
+          )}
         </SheetHeader>
 
         {/* Patient context header */}

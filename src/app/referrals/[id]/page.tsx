@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useReferralStore } from "@/stores/referral-store";
+import { useReferrals } from "@/hooks/use-referrals";
 import { ReferralParser } from "@/components/referrals/referral-parser";
 import type { Referral } from "@/types";
 
@@ -53,7 +53,7 @@ export default function ReferralDetailPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
-  const referrals = useReferralStore((s) => s.referrals);
+  const { data: referrals = [], isLoading } = useReferrals();
   const referral = referrals.find((r) => r.id === id);
 
   if (!referral) {

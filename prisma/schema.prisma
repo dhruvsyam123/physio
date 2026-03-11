@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Auth.js models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String
+  phone         String?
+  clinicName    String?
+  accounts      Account[]
+  sessions      Session[]
+  patients      Patient[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Domain models
+model Patient {
+  id                String   @id @default(cuid())
+  therapistId       String
+  firstName         String
+  lastName          String
+  email             String
+  phone             String
+  dateOfBirth       DateTime
+  gender            String
+  address           String
+  condition         String
+  status            String   @default("new")
+  avatar            String?
+  insuranceProvider String?
+  insuranceNumber   String?
+  emergencyContact  String?
+  emergencyPhone    String?
+  notes             String?  @db.Text
+  totalSessions     Int      @default(0)
+  completionRate    Float    @default(0)
+  therapist         User            @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+  appointments      Appointment[]
+  soapNotes         SOAPNote[]
+  treatmentPlans    TreatmentPlan[]
+  conversations     Conversation[]
+  referrals         Referral[]
+  outcomeRecords    OutcomeRecord[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([therapistId])
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  patientId   String
+  patientName String
+  date        DateTime @db.Date
+  startTime   String
+  endTime     String
+  type        String
+  status      String   @default("scheduled")
+  notes       String?  @db.Text
+  location    String?
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([patientId])
+  @@index([date])
+}
+
+model SOAPNote {
+  id             String         @id @default(cuid())
+  patientId      String
+  date           DateTime       @db.Date
+  subjective     String         @db.Text
+  objective      String         @db.Text
+  assessment     String         @db.Text
+  plan           String         @db.Text
+  therapistName  String
+  signed         Boolean        @default(false)
+  billingEntries BillingEntry[]
+  patient        Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([patientId])
+}
+
+model BillingEntry {
+  id          String   @id @default(cuid())
+  noteId      String
+  cptCode     String
+  description String
+  units       Int
+  timeMinutes Int
+  note        SOAPNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+
+  @@index([noteId])
+}
+
+model Exercise {
+  id            String         @id @default(cuid())
+  name          String
+  description   String         @db.Text
+  bodyRegion    String
+  category      String
+  difficulty    String
+  equipment     String?
+  imageUrl      String?
+  videoUrl      String?
+  instructions  String[]
+  sets          Int?
+  reps          Int?
+  holdSeconds   Int?
+  duration      String?
+  targetMuscles String[]
+  bestFor       String?
+  tips          String[]
+  planExercises PlanExercise[]
+  createdAt     DateTime       @default(now())
+}
+
+model TreatmentPlan {
+  id        String           @id @default(cuid())
+  patientId String
+  name      String
+  condition String
+  goals     String[]
+  status    String           @default("draft")
+  phases    TreatmentPhase[]
+  patient   Patient          @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([patientId])
+}
+
+model TreatmentPhase {
+  id        String         @id @default(cuid())
+  planId    String
+  name      String
+  weekStart Int
+  weekEnd   Int
+  notes     String?        @db.Text
+  exercises PlanExercise[]
+  plan      TreatmentPlan  @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId])
+}
+
+model PlanExercise {
+  id           String         @id @default(cuid())
+  phaseId      String
+  exerciseId   String
+  exerciseName String
+  sets         Int
+  reps         Int
+  holdSeconds  Int?
+  frequency    String
+  notes        String?
+  phase        TreatmentPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  exercise     Exercise       @relation(fields: [exerciseId], references: [id])
+
+  @@index([phaseId])
+}
+
+model Conversation {
+  id              String    @id @default(cuid())
+  patientId       String
+  patientName     String
+  patientAvatar   String?
+  lastMessage     String    @default("")
+  lastMessageTime DateTime  @default(now())
+  unreadCount     Int       @default(0)
+  messages        Message[]
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([patientId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  senderId       String
+  senderName     String
+  senderRole     String
+  content        String       @db.Text
+  read           Boolean      @default(false)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
+
+model Referral {
+  id           String   @id @default(cuid())
+  patientId    String?
+  patientName  String?
+  referrerName String
+  referrerType String
+  date         DateTime @db.Date
+  condition    String
+  rawText      String   @db.Text
+  status       String   @default("pending")
+  parsedData   Json?
+  patient      Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([patientId])
+}
+
+model OutcomeRecord {
+  id         String   @id @default(cuid())
+  patientId  String
+  type       String
+  label      String
+  value      Float
+  unit       String
+  date       DateTime @db.Date
+  notes      String?
+  bodyRegion String?
+  patient    Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([patientId])
+  @@index([patientId, type])
+}

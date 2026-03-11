@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useOutcomeStore } from "@/stores/outcome-store";
+import { useOutcomesByPatient, useCreateOutcome } from "@/hooks/use-outcomes";
 import { outcomeDefinitions } from "@/data/outcomes";
 import type { MeasureType } from "@/types/outcomes";
 
@@ -82,9 +82,8 @@ const defaultLabels: Record<MeasureType, string> = {
 };
 
 export function ProgressCharts({ patientId }: { patientId: string }) {
-  const allOutcomes = useOutcomeStore((s) => s.outcomes);
-  const outcomes = useMemo(() => allOutcomes.filter((o) => o.patientId === patientId), [allOutcomes, patientId]);
-  const addOutcome = useOutcomeStore((s) => s.addOutcome);
+  const { data: outcomes = [] } = useOutcomesByPatient(patientId);
+  const createOutcome = useCreateOutcome();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   // Form state for new measurement
@@ -186,11 +185,14 @@ export function ProgressCharts({ patientId }: { patientId: string }) {
       date: newDate,
       notes: newNotes || undefined,
     };
-    addOutcome(record);
-    setDialogOpen(false);
-    setNewValue("");
-    setNewNotes("");
-  }, [addOutcome, newDate, newLabel, newNotes, newType, newValue, patientId]);
+    createOutcome.mutate(record, {
+      onSuccess: () => {
+        setDialogOpen(false);
+        setNewValue("");
+        setNewNotes("");
+      },
+    });
+  }, [createOutcome, newDate, newLabel, newNotes, newType, newValue, patientId]);
 
   if (outcomes.length === 0) {
     return (

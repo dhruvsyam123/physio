@@ -17,8 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { usePatientStore } from "@/stores/patient-store";
-import { useReferralStore } from "@/stores/referral-store";
+import { useCreatePatient } from "@/hooks/use-patients";
+import { useUpdateReferral } from "@/hooks/use-referrals";
 import { toast } from "sonner";
 import type { ParsedReferral, Referral, Patient } from "@/types";
 
@@ -28,8 +28,8 @@ interface ReferralParserProps {
 
 export function ReferralParser({ referral }: ReferralParserProps) {
   const router = useRouter();
-  const addPatient = usePatientStore((s) => s.addPatient);
-  const updateReferral = useReferralStore((s) => s.updateReferral);
+  const createPatient = useCreatePatient();
+  const updateReferral = useUpdateReferral();
 
   const [rawText, setRawText] = useState(referral.rawText);
   const [parsedData, setParsedData] = useState<ParsedReferral | null>(
@@ -49,9 +49,12 @@ export function ReferralParser({ referral }: ReferralParserProps) {
       if (res.ok) {
         const data = await res.json();
         setParsedData(data);
-        updateReferral(referral.id, {
-          parsedData: data,
-          status: "reviewed",
+        updateReferral.mutate({
+          id: referral.id,
+          data: {
+            parsedData: data,
+            status: "reviewed",
+          },
         });
         toast.success("Referral parsed successfully");
       }
@@ -83,12 +86,13 @@ export function ReferralParser({ referral }: ReferralParserProps) {
       completionRate: 0,
     };
 
-    addPatient(newPatient);
-    updateReferral(referral.id, { status: "converted" });
-    toast.success("Patient created from referral");
-
-    // Navigate to new plan for this patient
-    router.push(`/patients/${patientId}/plans/new`);
+    createPatient.mutate(newPatient, {
+      onSuccess: () => {
+        updateReferral.mutate({ id: referral.id, data: { status: "converted" } });
+        toast.success("Patient created from referral");
+        router.push(`/patients/${patientId}/plans/new`);
+      },
+    });
   };
 
   return (

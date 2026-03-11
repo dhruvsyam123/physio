@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Sparkles, RefreshCw, AlertTriangle, ClipboardList, Star, UserPlus, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatients } from "@/hooks/use-patients";
 
 interface Insight {
   id: string;
@@ -15,7 +15,7 @@ interface Insight {
 }
 
 export function AIInsights() {
-  const patients = usePatientStore((s) => s.patients);
+  const { data: patients = [], isLoading } = usePatients();
   const [refreshing, setRefreshing] = useState(false);
   const [key, setKey] = useState(0);
 
@@ -117,7 +117,16 @@ export function AIInsights() {
           </div>
         </CardHeader>
         <CardContent>
-          {insights.length === 0 ? (
+          {isLoading ? (
+            <div className="space-y-3 py-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="h-4 w-4 shrink-0 rounded bg-muted animate-pulse mt-0.5" />
+                  <div className="h-4 w-full rounded bg-muted animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : insights.length === 0 ? (
             <p className="py-4 text-center text-sm text-muted-foreground">
               No insights available at this time.
             </p>

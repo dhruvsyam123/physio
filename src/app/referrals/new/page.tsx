@@ -4,12 +4,10 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, FileInput } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ReferralParser } from "@/components/referrals/referral-parser";
-import { useReferralStore } from "@/stores/referral-store";
 import type { Referral } from "@/types";
 
 export default function NewReferralPage() {
   const router = useRouter();
-  const addReferral = useReferralStore((s) => s.addReferral);
 
   const newReferral: Referral = {
     id: `ref-${Date.now()}`,

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversations } from "@/hooks/use-conversations";
 import { cn } from "@/lib/utils";
 
 interface ConversationListProps {
@@ -48,7 +48,7 @@ function formatTime(timestamp: string) {
 }
 
 export function ConversationList({ selectedId, onSelect }: ConversationListProps) {
-  const conversations = useMessageStore((state) => state.conversations);
+  const { data: conversations = [] } = useConversations();
   const [search, setSearch] = useState("");
 
   const filtered = conversations.filter((c) =>

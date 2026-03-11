@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { useAppointmentStore } from "@/stores/appointment-store";
+import { useAppointments } from "@/hooks/use-appointments";
 
 function getInitials(name: string) {
   return name
@@ -24,7 +24,7 @@ function getInitials(name: string) {
 }
 
 function UpcomingPatientsStrip() {
-  const appointments = useAppointmentStore((s) => s.appointments);
+  const { data: appointments = [], isLoading } = useAppointments();
 
   const today = "2026-03-11";
   const todaysApts = appointments
@@ -39,7 +39,7 @@ function UpcomingPatientsStrip() {
       (a.status === "scheduled" || a.status === "confirmed")
   );
 
-  if (todaysApts.length === 0) return null;
+  if (isLoading || todaysApts.length === 0) return null;
 
   return (
     <div className="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 flex-nowrap">

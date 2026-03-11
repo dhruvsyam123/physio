@@ -5,10 +5,10 @@ import { ClipboardCheck, Printer, CheckCircle2, FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress";
-import { usePatientStore } from "@/stores/patient-store";
-import { useOutcomeStore } from "@/stores/outcome-store";
-import { usePlanStore } from "@/stores/plan-store";
-import { useAppointmentStore } from "@/stores/appointment-store";
+import { usePatient } from "@/hooks/use-patients";
+import { useOutcomesByPatient } from "@/hooks/use-outcomes";
+import { usePlansByPatient } from "@/hooks/use-plans";
+import { useAppointmentsByPatient } from "@/hooks/use-appointments";
 import { outcomeDefinitions } from "@/data/outcomes";
 
 function formatDate(dateStr?: string) {
@@ -85,13 +85,10 @@ function getRedFlags(condition: string): string[] {
 }
 
 export function DischargePlanner({ patientId }: { patientId: string }) {
-  const patient = usePatientStore((s) => s.getPatientById(patientId));
-  const allOutcomes = useOutcomeStore((s) => s.outcomes);
-  const outcomes = useMemo(() => allOutcomes.filter((o) => o.patientId === patientId), [allOutcomes, patientId]);
-  const allPlans = usePlanStore((s) => s.plans);
-  const plans = useMemo(() => allPlans.filter((p) => p.patientId === patientId), [allPlans, patientId]);
-  const allAppointments = useAppointmentStore((s) => s.appointments);
-  const appointments = useMemo(() => allAppointments.filter((a) => a.patientId === patientId), [allAppointments, patientId]);
+  const { data: patient } = usePatient(patientId);
+  const { data: outcomes = [] } = useOutcomesByPatient(patientId);
+  const { data: plans = [] } = usePlansByPatient(patientId);
+  const { data: appointments = [] } = useAppointmentsByPatient(patientId);
 
   const [hepIndependent, setHepIndependent] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
@@ -419,9 +416,8 @@ export function DischargePlanner({ patientId }: { patientId: string }) {
 
 // Small exported component for overview tab use
 export function DischargeReadinessCard({ patientId }: { patientId: string }) {
-  const patient = usePatientStore((s) => s.getPatientById(patientId));
-  const allOutcomes = useOutcomeStore((s) => s.outcomes);
-  const outcomes = useMemo(() => allOutcomes.filter((o) => o.patientId === patientId), [allOutcomes, patientId]);
+  const { data: patient } = usePatient(patientId);
+  const { data: outcomes = [] } = useOutcomesByPatient(patientId);
 
   const readiness = useMemo(() => {
     if (!patient || outcomes.length === 0) return null;

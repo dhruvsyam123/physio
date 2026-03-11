@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgrammeBuilder } from "@/components/exercises/programme-builder";
-import { usePlanStore } from "@/stores/plan-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePlans, useCreatePlan, useUpdatePlan } from "@/hooks/use-plans";
+import { usePatients } from "@/hooks/use-patients";
 import type { TreatmentPlan } from "@/types";
 
 export default function ProgrammeViewPage({
@@ -16,15 +16,16 @@ export default function ProgrammeViewPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
-  const plans = usePlanStore((s) => s.plans);
-  const addPlan = usePlanStore((s) => s.addPlan);
-  const updatePlan = usePlanStore((s) => s.updatePlan);
+  const { data: plans = [] } = usePlans();
+  const createPlan = useCreatePlan();
+  const updatePlanMutation = useUpdatePlan();
+  const { data: patients = [] } = usePatients();
 
   const isNew = id === "new";
   const existingPlan = !isNew ? plans.find((p) => p.id === id) : undefined;
-  const patient = usePatientStore((s) =>
-    existingPlan ? s.getPatientById(existingPlan.patientId) : undefined
-  );
+  const patient = existingPlan
+    ? patients.find((p) => p.id === existingPlan.patientId)
+    : undefined;
 
   const defaultPlan: TreatmentPlan = existingPlan || {
     id: `plan-${Date.now()}`,
@@ -40,11 +41,15 @@ export default function ProgrammeViewPage({
 
   const handleSave = (plan: TreatmentPlan) => {
     if (isNew || !existingPlan) {
-      addPlan(plan);
+      createPlan.mutate(plan, {
+        onSuccess: () => router.push("/exercises"),
+      });
     } else {
-      updatePlan(plan.id, plan);
+      updatePlanMutation.mutate(
+        { id: plan.id, data: plan },
+        { onSuccess: () => router.push("/exercises") }
+      );
     }
-    router.push("/exercises");
   };
 
   return (

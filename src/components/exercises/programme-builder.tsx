@@ -62,7 +62,7 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
-import { useExerciseStore } from "@/stores/exercise-store";
+import { useExercises } from "@/hooks/use-exercises";
 import { toast } from "sonner";
 import { PlanTimeline } from "@/components/exercises/plan-timeline";
 import { HEPPreview } from "@/components/exercises/hep-preview";
@@ -119,7 +119,7 @@ function SortableExercise({
     isDragging,
   } = useSortable({ id: exercise.id });
   const [expanded, setExpanded] = useState(false);
-  const exercises = useExerciseStore((s) => s.exercises);
+  const { data: exercises = [] } = useExercises();
   const exerciseDetails = exercises.find((e) => e.id === exercise.exerciseId);
   const category = exerciseDetails?.category || "strengthening";
   const bodyRegion = exerciseDetails?.bodyRegion || "full-body";
@@ -259,7 +259,7 @@ function SortableExercise({
 
 // ─── Drag overlay card (floating preview) ───────────────
 function DragOverlayCard({ exercise }: { exercise: PlanExercise }) {
-  const exercises = useExerciseStore((s) => s.exercises);
+  const { data: exercises = [] } = useExercises();
   const details = exercises.find((e) => e.id === exercise.exerciseId);
   const category = details?.category || "strengthening";
   const borderColor = categoryBorderColors[category] || "border-l-gray-300";
@@ -294,7 +294,7 @@ function ExerciseCommandPalette({
   onAdd,
   condition,
 }: ExerciseCommandPaletteProps) {
-  const exercises = useExerciseStore((s) => s.exercises);
+  const { data: exercises = [] } = useExercises();
 
   // Group by body region
   const grouped = exercises.reduce<Record<string, Exercise[]>>((acc, ex) => {

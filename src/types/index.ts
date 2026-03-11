@@ -63,6 +63,9 @@ export interface Exercise {
   reps?: number;
   holdSeconds?: number;
   duration?: string;
+  targetMuscles?: string[];
+  bestFor?: string;
+  tips?: string[];
 }
 
 export interface TreatmentPlan {

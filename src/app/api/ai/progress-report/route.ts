@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateContent } from "@/lib/ai";
+import { auth } from "@/lib/auth";
 
 const PROGRESS_REPORT_PROMPT = `You are a clinical documentation assistant for physiotherapists. Generate a structured progress report suitable for Medicare compliance and insurance review.
 
@@ -21,6 +22,11 @@ function getFallbackReport(patientName: string, condition: string, sessionCount:
 }
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { patientName, condition, outcomes, notes, plan, sessionCount } = await req.json();
 

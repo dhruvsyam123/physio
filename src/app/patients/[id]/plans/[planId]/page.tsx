@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgrammeBuilder } from "@/components/exercises/programme-builder";
-import { usePlanStore } from "@/stores/plan-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatient } from "@/hooks/use-patients";
+import { usePlan, useCreatePlan, useUpdatePlan } from "@/hooks/use-plans";
 import type { TreatmentPlan } from "@/types";
 
 export default function PlanBuilderPage({
@@ -16,13 +16,11 @@ export default function PlanBuilderPage({
 }) {
   const { id: patientId, planId } = use(params);
   const router = useRouter();
-  const plans = usePlanStore((s) => s.plans);
-  const addPlan = usePlanStore((s) => s.addPlan);
-  const updatePlan = usePlanStore((s) => s.updatePlan);
-  const patient = usePatientStore((s) => s.getPatientById(patientId));
-
   const isNew = planId === "new";
-  const existingPlan = !isNew ? plans.find((p) => p.id === planId) : undefined;
+  const { data: patient, isLoading: patientLoading } = usePatient(patientId);
+  const { data: existingPlan, isLoading: planLoading } = usePlan(isNew ? "" : planId);
+  const createPlan = useCreatePlan();
+  const updatePlanMutation = useUpdatePlan();
 
   const defaultPlan: TreatmentPlan = existingPlan || {
     id: `plan-${Date.now()}`,
@@ -38,12 +36,23 @@ export default function PlanBuilderPage({
 
   const handleSave = (plan: TreatmentPlan) => {
     if (isNew) {
-      addPlan(plan);
+      createPlan.mutate(plan, {
+        onSuccess: () => router.push(`/patients/${patientId}`),
+      });
     } else {
-      updatePlan(plan.id, plan);
+      updatePlanMutation.mutate({ id: plan.id, data: plan }, {
+        onSuccess: () => router.push(`/patients/${patientId}`),
+      });
     }
-    router.push(`/patients/${patientId}`);
   };
+
+  if (patientLoading || (!isNew && planLoading)) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <p className="text-sm text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 lg:p-8">

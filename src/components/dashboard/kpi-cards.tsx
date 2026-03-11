@@ -2,8 +2,8 @@
 
 import { Users, Calendar, Clock, TrendingUp, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAppointmentStore } from "@/stores/appointment-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { useAppointments } from "@/hooks/use-appointments";
+import { usePatients } from "@/hooks/use-patients";
 
 interface KPICardProps {
   label: string;
@@ -49,8 +49,26 @@ function KPICard({ label, value, change, icon, iconBg, iconColor }: KPICardProps
 }
 
 export function KPICards() {
-  const appointments = useAppointmentStore((state) => state.appointments);
-  const patients = usePatientStore((state) => state.patients);
+  const { data: appointments = [], isLoading: loadingAppointments } = useAppointments();
+  const { data: patients = [], isLoading: loadingPatients } = usePatients();
+
+  if (loadingAppointments || loadingPatients) {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i}>
+            <CardContent className="flex items-center gap-4">
+              <div className="h-12 w-12 shrink-0 rounded-lg bg-muted animate-pulse" />
+              <div className="flex flex-col gap-1.5 flex-1">
+                <div className="h-4 w-24 rounded bg-muted animate-pulse" />
+                <div className="h-7 w-16 rounded bg-muted animate-pulse" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   const today = "2026-03-11";
   const todaysAppointments = appointments.filter((a) => a.date === today);

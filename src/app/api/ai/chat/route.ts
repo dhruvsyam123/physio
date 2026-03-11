@@ -1,8 +1,17 @@
 import { NextRequest } from "next/server";
 import { streamChat } from "@/lib/ai";
 import { CHAT_SYSTEM_PROMPT } from "@/lib/ai-prompts";
+import { auth } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   try {
     const { messages, patientContext } = await req.json();
 

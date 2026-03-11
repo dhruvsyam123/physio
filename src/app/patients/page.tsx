@@ -6,10 +6,10 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PatientCard } from "@/components/patients/patient-card";
 import { PatientSearch } from "@/components/patients/patient-search";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatients } from "@/hooks/use-patients";
 
 export default function PatientsPage() {
-  const patients = usePatientStore((s) => s.patients);
+  const { data: patients = [], isLoading } = usePatients();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -41,6 +41,14 @@ export default function PatientsPage() {
       return true;
     });
   }, [patients, search, statusFilter, conditionFilter]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <p className="text-sm text-muted-foreground">Loading patients...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 lg:p-8">

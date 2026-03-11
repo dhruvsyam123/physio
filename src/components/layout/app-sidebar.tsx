@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/stores/ui-store";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversations } from "@/hooks/use-conversations";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -37,7 +37,8 @@ const navItems = [
 export function AppSidebar() {
   const pathname = usePathname();
   const { sidebarCollapsed, toggleSidebar } = useUIStore();
-  const totalUnread = useMessageStore(s => s.conversations.reduce((sum, c) => sum + c.unreadCount, 0));
+  const { data: conversations = [] } = useConversations();
+  const totalUnread = conversations.reduce((sum, c) => sum + c.unreadCount, 0);
 
   return (
     <aside

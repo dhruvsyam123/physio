@@ -44,11 +44,11 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useNoteStore } from "@/stores/note-store";
-import { usePlanStore } from "@/stores/plan-store";
-import { useAppointmentStore } from "@/stores/appointment-store";
-import { useMessageStore } from "@/stores/message-store";
-import { useOutcomeStore } from "@/stores/outcome-store";
+import { useNotesByPatient } from "@/hooks/use-notes";
+import { usePlansByPatient } from "@/hooks/use-plans";
+import { useAppointmentsByPatient } from "@/hooks/use-appointments";
+import { useConversations } from "@/hooks/use-conversations";
+import { useOutcomesByPatient } from "@/hooks/use-outcomes";
 import { ProgressCharts } from "@/components/patients/progress-charts";
 import { AIProgressSummary } from "@/components/patients/ai-progress-summary";
 import { DischargeReadinessCard } from "@/components/patients/discharge-planner";
@@ -91,8 +91,7 @@ const appointmentStatusVariant: Record<
 
 // ---------- OVERVIEW TAB ----------
 function OverviewTab({ patient }: { patient: Patient }) {
-  const allOutcomes = useOutcomeStore((s) => s.outcomes);
-  const outcomes = useMemo(() => allOutcomes.filter((o) => o.patientId === patient.id), [allOutcomes, patient.id]);
+  const { data: outcomes = [] } = useOutcomesByPatient(patient.id);
 
   // Compute quick summary from outcome store
   const outcomeSummary = useMemo(() => {
@@ -374,8 +373,7 @@ function CompareSection({ label, text }: { label: string; text: string }) {
 
 // ---------- NOTES TAB ----------
 function NotesTab({ patient }: { patient: Patient }) {
-  const allNotes = useNoteStore((s) => s.notes);
-  const notes = useMemo(() => allNotes.filter((n) => n.patientId === patient.id), [allNotes, patient.id]);
+  const { data: notes = [] } = useNotesByPatient(patient.id);
 
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareNoteIndex, setCompareNoteIndex] = useState<number | null>(null);
@@ -496,8 +494,7 @@ function NoteSection({ label, text }: { label: string; text: string }) {
 
 // ---------- PLANS TAB ----------
 function PlansTab({ patient }: { patient: Patient }) {
-  const allPlans = usePlanStore((s) => s.plans);
-  const plans = useMemo(() => allPlans.filter((p) => p.patientId === patient.id), [allPlans, patient.id]);
+  const { data: plans = [] } = usePlansByPatient(patient.id);
 
   const planStatusVariant: Record<
     string,
@@ -574,8 +571,7 @@ function PlansTab({ patient }: { patient: Patient }) {
 
 // ---------- APPOINTMENTS TAB ----------
 function AppointmentsTab({ patient }: { patient: Patient }) {
-  const allAppointments = useAppointmentStore((s) => s.appointments);
-  const appointments = useMemo(() => allAppointments.filter((a) => a.patientId === patient.id), [allAppointments, patient.id]);
+  const { data: appointments = [] } = useAppointmentsByPatient(patient.id);
 
   const sorted = useMemo(() => [...appointments].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -646,7 +642,7 @@ function AppointmentsTab({ patient }: { patient: Patient }) {
 
 // ---------- MESSAGES TAB ----------
 function MessagesTab({ patient }: { patient: Patient }) {
-  const conversations = useMessageStore((s) => s.conversations);
+  const { data: conversations = [] } = useConversations();
   const conversation = conversations.find(
     (c) => c.patientId === patient.id
   );

@@ -4,14 +4,22 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatient } from "@/hooks/use-patients";
 import { IntakeForm } from "@/components/patients/intake-form";
 
 export default function IntakePage() {
   const params = useParams();
   const router = useRouter();
   const patientId = params.id as string;
-  const patient = usePatientStore((state) => state.getPatientById(patientId));
+  const { data: patient, isLoading } = usePatient(patientId);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <p className="text-sm text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 lg:p-8">

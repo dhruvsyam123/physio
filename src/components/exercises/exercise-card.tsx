@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import {
-  ChevronDown,
-  ChevronUp,
   Dumbbell,
   Activity,
   StretchHorizontal,
@@ -11,10 +9,12 @@ import {
   Scale,
   Heart,
   Zap,
+  Eye,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ExerciseDetailDialog } from "./exercise-detail-dialog";
 import type { Exercise } from "@/types";
 
 const regionIcons: Record<string, React.ReactNode> = {
@@ -65,107 +65,92 @@ interface ExerciseCardProps {
 }
 
 export function ExerciseCard({ exercise }: ExerciseCardProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
-    <Card
-      className="cursor-pointer transition-shadow hover:shadow-md"
-      onClick={() => setExpanded(!expanded)}
-    >
-      {/* Placeholder image area */}
-      <div
-        className={`flex h-32 items-center justify-center rounded-t-lg bg-gradient-to-br ${
-          regionGradients[exercise.bodyRegion] || regionGradients["full-body"]
-        }`}
+    <>
+      <Card
+        className="cursor-pointer transition-shadow hover:shadow-md"
+        onClick={() => setDetailOpen(true)}
       >
-        <div className="text-muted-foreground/60">
-          {regionIcons[exercise.bodyRegion] || <Dumbbell className="h-8 w-8" />}
-        </div>
-      </div>
-
-      <CardContent className="space-y-3 pt-3">
-        {/* Name */}
-        <h3 className="text-sm font-semibold leading-tight">{exercise.name}</h3>
-
-        {/* Badges */}
-        <div className="flex flex-wrap gap-1.5">
-          <span
-            className={`inline-flex h-5 items-center rounded-full px-2 text-[10px] font-medium ${
-              categoryColors[exercise.category]
-            }`}
-          >
-            {exercise.category}
-          </span>
-          <span
-            className={`inline-flex h-5 items-center rounded-full px-2 text-[10px] font-medium ${
-              difficultyColors[exercise.difficulty]
-            }`}
-          >
-            {exercise.difficulty}
-          </span>
-          <Badge variant="secondary" className="text-[10px]">
-            {exercise.bodyRegion.replace("-", " ")}
-          </Badge>
-        </div>
-
-        {/* Equipment */}
-        {exercise.equipment && (
-          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Dumbbell className="h-3 w-3 shrink-0" />
-            {exercise.equipment}
-          </p>
-        )}
-
-        {/* Sets/reps summary */}
-        <div className="flex gap-3 text-xs text-muted-foreground">
-          {exercise.sets && <span>{exercise.sets} sets</span>}
-          {exercise.reps && <span>{exercise.reps} reps</span>}
-          {exercise.holdSeconds && <span>{exercise.holdSeconds}s hold</span>}
-          {exercise.duration && <span>{exercise.duration}</span>}
-        </div>
-
-        {/* Description */}
-        <p className="text-xs text-muted-foreground line-clamp-2">
-          {exercise.description}
-        </p>
-
-        {/* Expandable instructions */}
-        {expanded && (
-          <div className="space-y-2 border-t pt-3">
-            <p className="text-xs font-medium">Instructions:</p>
-            <ol className="space-y-1.5 pl-4 text-xs text-muted-foreground">
-              {exercise.instructions.map((step, i) => (
-                <li key={i} className="list-decimal">
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-
-        {/* Expand toggle */}
-        <Button
-          variant="ghost"
-          size="xs"
-          className="w-full text-muted-foreground"
-          onClick={(e) => {
-            e.stopPropagation();
-            setExpanded(!expanded);
-          }}
+        {/* Placeholder image area */}
+        <div
+          className={`flex h-32 items-center justify-center rounded-t-lg bg-gradient-to-br ${
+            regionGradients[exercise.bodyRegion] || regionGradients["full-body"]
+          }`}
         >
-          {expanded ? (
-            <>
-              <ChevronUp className="h-3 w-3" />
-              Hide instructions
-            </>
-          ) : (
-            <>
-              <ChevronDown className="h-3 w-3" />
-              Show instructions
-            </>
+          <div className="text-muted-foreground/60">
+            {regionIcons[exercise.bodyRegion] || <Dumbbell className="h-8 w-8" />}
+          </div>
+        </div>
+
+        <CardContent className="space-y-3 pt-3">
+          {/* Name */}
+          <h3 className="text-sm font-semibold leading-tight">{exercise.name}</h3>
+
+          {/* Badges */}
+          <div className="flex flex-wrap gap-1.5">
+            <span
+              className={`inline-flex h-5 items-center rounded-full px-2 text-[10px] font-medium ${
+                categoryColors[exercise.category]
+              }`}
+            >
+              {exercise.category}
+            </span>
+            <span
+              className={`inline-flex h-5 items-center rounded-full px-2 text-[10px] font-medium ${
+                difficultyColors[exercise.difficulty]
+              }`}
+            >
+              {exercise.difficulty}
+            </span>
+            <Badge variant="secondary" className="text-[10px]">
+              {exercise.bodyRegion.replace("-", " ")}
+            </Badge>
+          </div>
+
+          {/* Equipment */}
+          {exercise.equipment && (
+            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Dumbbell className="h-3 w-3 shrink-0" />
+              {exercise.equipment}
+            </p>
           )}
-        </Button>
-      </CardContent>
-    </Card>
+
+          {/* Sets/reps summary */}
+          <div className="flex gap-3 text-xs text-muted-foreground">
+            {exercise.sets && <span>{exercise.sets} sets</span>}
+            {exercise.reps && <span>{exercise.reps} reps</span>}
+            {exercise.holdSeconds && <span>{exercise.holdSeconds}s hold</span>}
+            {exercise.duration && <span>{exercise.duration}</span>}
+          </div>
+
+          {/* Description */}
+          <p className="text-xs text-muted-foreground line-clamp-2">
+            {exercise.description}
+          </p>
+
+          {/* View details button */}
+          <Button
+            variant="ghost"
+            size="xs"
+            className="w-full text-muted-foreground"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDetailOpen(true);
+            }}
+          >
+            <Eye className="h-3 w-3" />
+            View details
+          </Button>
+        </CardContent>
+      </Card>
+
+      <ExerciseDetailDialog
+        exercise={exercise}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+      />
+    </>
   );
 }

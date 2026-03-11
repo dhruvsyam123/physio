@@ -1,20 +1,37 @@
 "use client";
 
+import { Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SOAPNoteEditor } from "@/components/notes/soap-note-editor";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatient } from "@/hooks/use-patients";
 
 export default function NewSOAPNotePage() {
+  return (
+    <Suspense>
+      <NewSOAPNotePageInner />
+    </Suspense>
+  );
+}
+
+function NewSOAPNotePageInner() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
   const patientId = params.id as string;
-  const patient = usePatientStore((state) => state.getPatientById(patientId));
+  const { data: patient, isLoading } = usePatient(patientId);
 
   const copyObjective = searchParams.get("copyObjective") ?? undefined;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <p className="text-sm text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 lg:p-8">

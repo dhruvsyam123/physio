@@ -2,35 +2,37 @@
 
 import { useMemo, useState } from "react";
 import { Dumbbell } from "lucide-react";
-import { useExerciseStore } from "@/stores/exercise-store";
+import { useExercises } from "@/hooks/use-exercises";
 import { ExerciseFilters } from "@/components/exercises/exercise-filters";
 import { ExerciseGrid } from "@/components/exercises/exercise-grid";
+import { BodyMap } from "@/components/exercises/body-map";
 
 export default function ExercisesPage() {
-  const exercises = useExerciseStore((s) => s.exercises);
-
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("all");
   const [category, setCategory] = useState("all");
   const [difficulty, setDifficulty] = useState("all");
 
-  const filtered = useMemo(() => {
-    return exercises.filter((ex) => {
-      if (region !== "all" && ex.bodyRegion !== region) return false;
-      if (category !== "all" && ex.category !== category) return false;
-      if (difficulty !== "all" && ex.difficulty !== difficulty) return false;
-      if (search) {
-        const q = search.toLowerCase();
-        const match =
-          ex.name.toLowerCase().includes(q) ||
-          ex.description.toLowerCase().includes(q) ||
-          ex.bodyRegion.toLowerCase().includes(q) ||
-          ex.category.toLowerCase().includes(q);
-        if (!match) return false;
-      }
-      return true;
-    });
-  }, [exercises, search, region, category, difficulty]);
+  const { data: exercises = [], isLoading } = useExercises({
+    region: region !== "all" ? region : undefined,
+    category: category !== "all" ? category : undefined,
+    difficulty: difficulty !== "all" ? difficulty : undefined,
+    search: search || undefined,
+  });
+
+  // Also fetch all exercises for the body map counts
+  const { data: allExercises = [] } = useExercises();
+
+  const filtered = exercises;
+
+  // Count exercises per body region (using all exercises, not filtered)
+  const exerciseCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const ex of allExercises) {
+      counts[ex.bodyRegion] = (counts[ex.bodyRegion] || 0) + 1;
+    }
+    return counts;
+  }, [allExercises]);
 
   const handleReset = () => {
     setSearch("");
@@ -51,26 +53,41 @@ export default function ExercisesPage() {
             Exercise Library
           </h1>
           <p className="text-sm text-muted-foreground">
-            {filtered.length} of {exercises.length} exercises
+            {filtered.length} of {allExercises.length} exercises
           </p>
         </div>
       </div>
 
-      {/* Filters */}
-      <ExerciseFilters
-        search={search}
-        onSearchChange={setSearch}
-        region={region}
-        onRegionChange={setRegion}
-        category={category}
-        onCategoryChange={setCategory}
-        difficulty={difficulty}
-        onDifficultyChange={setDifficulty}
-        onReset={handleReset}
-      />
+      {/* Main layout: Body map sidebar + content */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Body Map Sidebar */}
+        <div className="w-full lg:w-[280px] shrink-0">
+          <BodyMap
+            selectedRegion={region}
+            onRegionChange={setRegion}
+            exerciseCounts={exerciseCounts}
+          />
+        </div>
 
-      {/* Grid */}
-      <ExerciseGrid exercises={filtered} />
+        {/* Content area */}
+        <div className="flex-1 flex flex-col gap-4 min-w-0">
+          {/* Other filters (search, category, difficulty) */}
+          <ExerciseFilters
+            search={search}
+            onSearchChange={setSearch}
+            region={region}
+            onRegionChange={setRegion}
+            category={category}
+            onCategoryChange={setCategory}
+            difficulty={difficulty}
+            onDifficultyChange={setDifficulty}
+            onReset={handleReset}
+          />
+
+          {/* Grid */}
+          <ExerciseGrid exercises={filtered} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Brain, Clock, AlertTriangle, ClipboardList, CalendarPlus } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useAppointmentStore } from "@/stores/appointment-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { useAppointments } from "@/hooks/use-appointments";
+import { usePatients } from "@/hooks/use-patients";
 
 interface Suggestion {
   id: string;
@@ -15,8 +15,8 @@ interface Suggestion {
 }
 
 export function SmartSuggestions() {
-  const appointments = useAppointmentStore((s) => s.appointments);
-  const patients = usePatientStore((s) => s.patients);
+  const { data: appointments = [] } = useAppointments();
+  const { data: patients = [] } = usePatients();
 
   function computeSuggestions(): Suggestion[] {
     const suggestions: Suggestion[] = [];

@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useExerciseStore } from "@/stores/exercise-store";
+import { useExercises } from "@/hooks/use-exercises";
 import { toast } from "sonner";
 import type { TreatmentPlan, TreatmentPhase } from "@/types";
 
@@ -52,7 +52,7 @@ interface HEPPreviewProps {
 }
 
 export function HEPPreview({ plan, patientName }: HEPPreviewProps) {
-  const exercises = useExerciseStore((s) => s.exercises);
+  const { data: exercises = [] } = useExercises();
 
   const getExerciseDetails = (exerciseId: string) =>
     exercises.find((e) => e.id === exerciseId);

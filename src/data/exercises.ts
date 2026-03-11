@@ -18,6 +18,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 15,
     holdSeconds: 5,
+    targetMuscles: ["Vastus medialis oblique (VMO)", "Quadriceps"],
+    bestFor: "Early post-operative knee rehab, patellofemoral pain, maintaining quad activation when knee bending is limited",
+    tips: [
+      "Place your hand on the inner quad above the kneecap to feel the muscle engage.",
+      "Push the back of your knee firmly into the towel — don't lift the heel.",
+      "If you can't feel the VMO firing, try turning the foot slightly outward.",
+    ],
   },
   {
     id: "ex2",
@@ -34,6 +41,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 12,
+    targetMuscles: ["Quadriceps", "Hip flexors (iliopsoas)"],
+    bestFor: "Post-operative ACL/meniscus rehab, patellofemoral pain, early-stage knee strengthening when range is limited",
+    tips: [
+      "Lock the knee fully before lifting — if it bends, the exercise loses its purpose.",
+      "Add an ankle weight to progress once 3x12 becomes easy.",
+      "Control the lowering phase — don't just drop the leg.",
+    ],
   },
   {
     id: "ex3",
@@ -53,6 +67,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 15,
     holdSeconds: 2,
+    targetMuscles: ["Vastus medialis oblique (VMO)", "Quadriceps"],
+    bestFor: "Patellofemoral pain syndrome, ACL rehab (mid-stage), restoring full terminal extension",
+    tips: [
+      "Focus on the final 'snap' into full extension — this is where VMO works hardest.",
+      "Stand close enough to the anchor that the band provides resistance at the start.",
+      "Avoid hyperextending — lock out firmly but don't push past straight.",
+    ],
   },
   {
     id: "ex4",
@@ -69,6 +90,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Quadriceps", "Gluteus maximus", "Core stabilisers"],
+    bestFor: "Patellofemoral rehab, building quad endurance for skiing/cycling, mid-stage ACL rehab",
+    tips: [
+      "Start at a shallower angle (higher up) if 60 degrees is too painful.",
+      "Keep knees aligned over the second toe — don't let them cave inward.",
+      "Breathe normally — don't hold your breath.",
+    ],
   },
   {
     id: "ex5",
@@ -86,6 +114,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 12,
+    targetMuscles: ["Hamstrings (biceps femoris, semimembranosus, semitendinosus)"],
+    bestFor: "ACL rehab (hamstring co-contraction), post knee surgery, general knee stability",
+    tips: [
+      "Don't swing the leg — slow and controlled is key.",
+      "Keep your hips level and avoid leaning forward.",
+      "Progress with ankle weights in 0.5 kg increments.",
+    ],
   },
   {
     id: "ex6",
@@ -104,6 +139,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 10,
+    targetMuscles: ["Quadriceps", "Gluteus maximus", "Gluteus medius"],
+    bestFor: "Return to stair climbing, functional rehab post knee/hip surgery, building single-leg strength",
+    tips: [
+      "Don't push off with the back leg — drive through the top foot.",
+      "Start with a low step and increase height as strength improves.",
+      "Watch for knee valgus (collapsing inward) — this is the key form error.",
+    ],
   },
   {
     id: "ex7",
@@ -121,6 +163,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 45,
+    targetMuscles: ["Quadriceps", "Hamstrings", "Ankle stabilisers", "Core"],
+    bestFor: "Late-stage ACL rehab, ankle sprain recovery, return to sport preparation",
+    tips: [
+      "Start with eyes open, then progress to eyes closed for greater challenge.",
+      "Keep a soft knee bend — don't lock out straight.",
+      "Add perturbation (have someone gently push you) to progress further.",
+    ],
   },
 
   // === SHOULDER EXERCISES ===
@@ -139,6 +188,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 2,
     duration: "2 minutes each direction",
+    targetMuscles: ["Glenohumeral joint capsule (passive)"],
+    bestFor: "Post-operative shoulder (rotator cuff repair, arthroplasty), frozen shoulder early phase, acute shoulder pain",
+    tips: [
+      "The arm must be completely relaxed — if you're actively swinging, you're doing it wrong.",
+      "Use body sway to create the movement, not the shoulder muscles.",
+      "Hold a light weight (1-2 kg) to increase the joint distraction effect.",
+    ],
   },
   {
     id: "ex9",
@@ -157,6 +213,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 10,
     holdSeconds: 10,
+    targetMuscles: ["Anterior deltoid", "Pectoralis major", "Shoulder capsule"],
+    bestFor: "Frozen shoulder, post-surgical ROM restoration, rotator cuff rehab (protective phase)",
+    tips: [
+      "Let the good arm do the work — the involved side should be passive.",
+      "Lying down removes gravity, making the stretch more comfortable.",
+      "Stop before sharp pain — a gentle stretch is all you need.",
+    ],
   },
   {
     id: "ex10",
@@ -175,6 +238,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 12,
+    targetMuscles: ["Infraspinatus", "Teres minor"],
+    bestFor: "Rotator cuff tendinopathy, impingement syndrome, shoulder instability, overhead athlete rehab",
+    tips: [
+      "The towel roll cue is crucial — it prevents compensatory shoulder hiking.",
+      "Don't let the elbow drift away from your side.",
+      "Slow the return phase to 3 seconds for maximum benefit.",
+    ],
   },
   {
     id: "ex11",
@@ -194,6 +264,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 12,
     holdSeconds: 2,
+    targetMuscles: ["Middle trapezius", "Rhomboids", "Posterior deltoid"],
+    bestFor: "Postural correction, scapular dyskinesis, desk worker rehabilitation, impingement prevention",
+    tips: [
+      "Think 'squeeze the shoulder blades together' — not 'pull with the arms'.",
+      "Keep shoulders down and away from ears throughout.",
+      "This is a scapular exercise — if you only feel it in your arms, reduce resistance.",
+    ],
   },
   {
     id: "ex12",
@@ -210,6 +287,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Posterior shoulder capsule", "Infraspinatus", "Teres minor"],
+    bestFor: "Throwing athletes with GIRD (glenohumeral internal rotation deficit), posterior capsule tightness, impingement",
+    tips: [
+      "Apply gentle pressure only — this should never be painful.",
+      "Don't roll forward onto the shoulder — stay stacked directly on your side.",
+      "Best performed after warm-up or at end of day when muscles are warm.",
+    ],
   },
   {
     id: "ex13",
@@ -226,6 +310,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 4,
     holdSeconds: 30,
+    targetMuscles: ["Supraspinatus", "Anterior deltoid"],
+    bestFor: "Rotator cuff tendinopathy (pain-dominant phase), calcific tendinitis, early post-operative strengthening",
+    tips: [
+      "Start at low effort (30%) and gradually build to 70% over weeks.",
+      "Isometrics can provide pain relief — use as a pain management tool.",
+      "Maintain normal breathing — don't hold your breath during the hold.",
+    ],
   },
   {
     id: "ex14",
@@ -244,6 +335,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 8,
     holdSeconds: 3,
+    targetMuscles: ["Lower trapezius", "Middle trapezius", "Infraspinatus", "Serratus anterior"],
+    bestFor: "Scapular dyskinesis, overhead athlete rehab, postural retraining, impingement syndrome",
+    tips: [
+      "Thumbs up position is critical — it externally rotates the shoulder for safe clearance.",
+      "Focus on the squeeze between shoulder blades, not on how high you lift.",
+      "Start without weights; add 0.5-1 kg dumbbells only when form is perfect.",
+    ],
   },
 
   // === LOWER BACK EXERCISES ===
@@ -263,6 +361,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 10,
     holdSeconds: 3,
+    targetMuscles: ["Lumbar erector spinae", "Multifidus (passive stretch)"],
+    bestFor: "Disc herniation/protrusion (extension-biased presentation), centralisation of radicular symptoms, desk worker deconditioning",
+    tips: [
+      "Monitor symptom behaviour — pain should centralise (move toward the spine), not peripheralise.",
+      "If pain moves further into the leg, stop and reassess direction preference.",
+      "Hips must stay on the floor — this is not a push-up.",
+    ],
   },
   {
     id: "ex16",
@@ -279,6 +384,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 2,
     reps: 12,
+    targetMuscles: ["Erector spinae", "Rectus abdominis", "Transversus abdominis"],
+    bestFor: "Morning stiffness, general low back pain, warm-up before exercise, pregnancy-related back pain",
+    tips: [
+      "Coordinate breath with movement — inhale into cow, exhale into cat.",
+      "Move through the entire spine segment by segment, not just the lower back.",
+      "This should feel like a gentle 'oil change' for the spine — never force the range.",
+    ],
   },
   {
     id: "ex17",
@@ -297,6 +409,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 10,
     holdSeconds: 3,
+    targetMuscles: ["Multifidus", "Erector spinae", "Gluteus maximus", "Transversus abdominis"],
+    bestFor: "Lumbar instability, post-discectomy rehab, core re-education, spondylolisthesis management",
+    tips: [
+      "Place a foam roller or water bottle on your back — if it falls off, you're rotating too much.",
+      "Extend the arm and leg only as far as you can keep the trunk perfectly still.",
+      "Think 'long' not 'high' — reach away from the body rather than lifting up.",
+    ],
   },
   {
     id: "ex18",
@@ -314,6 +433,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 10,
+    targetMuscles: ["Transversus abdominis", "Internal obliques", "Rectus abdominis", "Diaphragm"],
+    bestFor: "Low back pain with poor motor control, post-partum core rehab, athletic core training foundation",
+    tips: [
+      "The key cue: your lower back must stay pressed into the floor throughout.",
+      "If your back lifts, you've gone too far — reduce range until you can maintain the press.",
+      "Exhale as you extend the limbs — this helps maintain intra-abdominal pressure.",
+    ],
   },
   {
     id: "ex19",
@@ -331,6 +457,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Lumbar erector spinae", "Quadratus lumborum", "External obliques"],
+    bestFor: "General low back stiffness, end-of-day tension relief, post-activity cool-down",
+    tips: [
+      "Both shoulders must stay on the floor — if one lifts, reduce the range.",
+      "Let gravity do the work — don't force the knees down.",
+      "Breathe slowly and deeply to enhance the muscle release.",
+    ],
   },
   {
     id: "ex20",
@@ -349,6 +482,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 12,
     holdSeconds: 3,
+    targetMuscles: ["Gluteus maximus", "Hamstrings", "Erector spinae"],
+    bestFor: "Gluteal inhibition (desk workers), low back pain, hip rehab, pre-squat activation",
+    tips: [
+      "Squeeze glutes at the top — don't just push hips up with hamstrings.",
+      "Avoid overarching — your ribs and pelvis should stay aligned.",
+      "Progress to single-leg bridges when double-leg becomes easy.",
+    ],
   },
   {
     id: "ex21",
@@ -366,6 +506,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Quadratus lumborum", "Internal/external obliques", "Gluteus medius"],
+    bestFor: "Scoliosis management, lateral trunk weakness, lumbar disc issues (McGill Big 3), athletic performance",
+    tips: [
+      "Start with knees bent (modified side plank) if full version is too difficult.",
+      "Keep ears, shoulders, hips, and ankles in one line.",
+      "Don't let the top hip roll forward — stack directly over the bottom hip.",
+    ],
   },
 
   // === HIP EXERCISES ===
@@ -386,6 +533,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 15,
     holdSeconds: 2,
+    targetMuscles: ["Gluteus medius", "Gluteus minimus", "Deep hip external rotators"],
+    bestFor: "Hip bursitis, ITB syndrome, knee valgus correction, pelvic stability, runner's knee prevention",
+    tips: [
+      "Place your back against a wall to prevent rolling — this is the most common error.",
+      "The movement comes from the hip, not the pelvis — keep the pelvis still.",
+      "Add a resistance band above the knees to increase difficulty.",
+    ],
   },
   {
     id: "ex23",
@@ -403,6 +557,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Iliopsoas", "Rectus femoris", "Tensor fasciae latae"],
+    bestFor: "Anterior hip pain, desk worker tightness, low back pain from hip flexor stiffness, post-hip arthroscopy",
+    tips: [
+      "The posterior pelvic tilt (glute squeeze) is the most important cue — without it, you'll stretch the wrong thing.",
+      "Don't lunge forward excessively — the stretch should come from the pelvic tilt.",
+      "Add a same-side arm overhead reach to intensify the stretch on the psoas.",
+    ],
   },
   {
     id: "ex24",
@@ -420,6 +581,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 12,
+    targetMuscles: ["Gluteus medius", "Gluteus minimus", "Tensor fasciae latae"],
+    bestFor: "Trendelenburg gait correction, hip OA management, running-related hip pain, post hip replacement",
+    tips: [
+      "Don't lean away — keep your trunk vertical; the movement is at the hip only.",
+      "Lead with the heel, not the toe, to better target the glute med.",
+      "Keep the standing knee slightly bent to also work that side's stability.",
+    ],
   },
   {
     id: "ex25",
@@ -438,6 +606,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 10,
+    targetMuscles: ["Quadriceps", "Gluteus maximus", "Core stabilisers"],
+    bestFor: "Post hip/knee replacement, elderly fall prevention, functional independence assessment, de-conditioned patients",
+    tips: [
+      "The 'nose over toes' cue helps patients shift weight forward enough to stand.",
+      "Use a higher chair to make it easier, lower chair to make it harder.",
+      "Slow the sit-down phase to 4 seconds — this is where the real strengthening happens.",
+    ],
   },
   {
     id: "ex26",
@@ -454,6 +629,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 10,
+    targetMuscles: ["Hip flexors", "Quadriceps (eccentric)"],
+    bestFor: "Early post-operative hip replacement, hip arthroscopy recovery, acute hip pain management",
+    tips: [
+      "Keep the heel in contact with the bed throughout — this reduces the load on the hip.",
+      "Use a plastic bag under the heel on a sheet to reduce friction if needed.",
+      "Don't force range — let it improve naturally over sessions.",
+    ],
   },
 
   // === ANKLE EXERCISES ===
@@ -473,6 +655,13 @@ export const mockExercises: Exercise[] = [
     sets: 1,
     reps: 2,
     duration: "5 minutes",
+    targetMuscles: ["Tibialis anterior", "Peroneals", "Gastrocnemius/soleus (all ankle movers)"],
+    bestFor: "Post ankle sprain (acute phase), post ankle fracture, reducing swelling through muscle pump action",
+    tips: [
+      "Capital letters give a better range of motion workout than lowercase.",
+      "Move from the ankle only — keep the leg still.",
+      "This is also excellent for reducing swelling through the calf muscle pump effect.",
+    ],
   },
   {
     id: "ex28",
@@ -490,6 +679,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 15,
     holdSeconds: 2,
+    targetMuscles: ["Gastrocnemius", "Soleus"],
+    bestFor: "Achilles tendinopathy (in combination with eccentrics), ankle sprain rehab, calf strain recovery",
+    tips: [
+      "Rise as high as you can — partial range reduces the benefit.",
+      "The slow lowering (eccentric) phase is where most strength is gained.",
+      "Progress to single-leg when double-leg 3x15 is comfortable.",
+    ],
   },
   {
     id: "ex29",
@@ -507,6 +703,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 12,
+    targetMuscles: ["Gastrocnemius", "Soleus"],
+    bestFor: "Achilles tendinopathy (Alfredson protocol), return to running, calf strain late-stage rehab",
+    tips: [
+      "The Alfredson protocol uses this exercise with added load — build volume first.",
+      "Both the concentric (up) and eccentric (down) phases matter for tendon rehab.",
+      "Aim for 3x15 before adding external load.",
+    ],
   },
   {
     id: "ex30",
@@ -525,6 +728,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 15,
     holdSeconds: 2,
+    targetMuscles: ["Peroneus longus", "Peroneus brevis"],
+    bestFor: "Lateral ankle sprain rehab, chronic ankle instability, inversion sprain prevention",
+    tips: [
+      "The peroneals are the primary defence against ankle inversion sprains.",
+      "Keep the movement isolated to the foot — don't rotate the whole leg.",
+      "Progress by using a stronger band resistance, not by moving faster.",
+    ],
   },
   {
     id: "ex31",
@@ -541,6 +751,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Ankle stabilisers (peroneals, tibialis posterior)", "Intrinsic foot muscles", "Core"],
+    bestFor: "Chronic ankle instability, return to sport testing, fall prevention in elderly, proprioceptive retraining",
+    tips: [
+      "Eyes closed removes visual input, forcing the ankle proprioceptors to work harder.",
+      "Always stand near a wall for safety — falling is a real risk.",
+      "Progress: eyes closed → standing on foam → eyes closed on foam.",
+    ],
   },
 
   // === NECK EXERCISES ===
@@ -560,6 +777,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 10,
     holdSeconds: 5,
+    targetMuscles: ["Deep cervical flexors (longus colli, longus capitis)"],
+    bestFor: "Forward head posture, cervicogenic headache, neck pain from desk work, whiplash recovery",
+    tips: [
+      "Think 'double chin' — if you're not making one, you're not doing it right.",
+      "Don't tilt the head up or down — the movement is purely horizontal.",
+      "Can be performed at a desk every hour as a posture reset.",
+    ],
   },
   {
     id: "ex33",
@@ -577,6 +801,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 5,
     holdSeconds: 15,
+    targetMuscles: ["Sternocleidomastoid", "Upper trapezius", "Cervical rotators"],
+    bestFor: "Cervical stiffness, post-whiplash ROM restoration, torticollis management, morning neck stiffness",
+    tips: [
+      "Keep the shoulders relaxed and level — don't let them creep up.",
+      "Move slowly and smoothly — never jerk the neck.",
+      "Compare left and right rotation — asymmetry may indicate a specific joint restriction.",
+    ],
   },
   {
     id: "ex34",
@@ -593,6 +824,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Upper trapezius", "Levator scapulae"],
+    bestFor: "Tension headaches, desk worker neck/shoulder tension, stress-related muscle guarding",
+    tips: [
+      "Anchoring the opposite shoulder down is essential — the stretch doesn't work without it.",
+      "Use very gentle overpressure — the neck is sensitive.",
+      "Rotate the head slightly down (nose toward armpit) to shift the stretch to the levator scapulae.",
+    ],
   },
   {
     id: "ex35",
@@ -610,6 +848,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 8,
     holdSeconds: 8,
+    targetMuscles: ["Deep cervical flexors", "Sternocleidomastoid"],
+    bestFor: "Cervical instability, whiplash recovery (strengthening phase), neck strengthening for contact sports",
+    tips: [
+      "No movement should occur — this is a purely isometric (static) exercise.",
+      "Start at low effort (30%) and build up gradually over weeks.",
+      "Can also be performed in extension, lateral flexion, and rotation directions.",
+    ],
   },
 
   // === UPPER BACK EXERCISES ===
@@ -630,6 +875,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 2,
     reps: 8,
+    targetMuscles: ["Thoracic erector spinae", "Thoracic facet joints (mobilisation)"],
+    bestFor: "Thoracic kyphosis, desk worker stiffness, shoulder impingement (thoracic component), rib cage mobility",
+    tips: [
+      "Move the roller between different thoracic levels — don't just stay in one spot.",
+      "Keep the hands behind the head to support the neck — never let the neck extend.",
+      "A crack or pop is normal and not harmful if it occurs naturally.",
+    ],
   },
   {
     id: "ex37",
@@ -648,6 +900,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 8,
     holdSeconds: 5,
+    targetMuscles: ["Thoracic rotators", "Pectoralis major (stretch)", "Internal/external obliques"],
+    bestFor: "Thoracic stiffness, golfer/cricket rotational sports, shoulder mobility limitations due to thoracic restriction",
+    tips: [
+      "The knees must stay stacked and still — this isolates the rotation to the thoracic spine.",
+      "Follow the moving hand with your eyes to encourage full rotation.",
+      "Exhale as you open up — this helps relax the chest muscles.",
+    ],
   },
   {
     id: "ex38",
@@ -667,6 +926,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 12,
     holdSeconds: 2,
+    targetMuscles: ["Middle trapezius", "Rhomboids", "Latissimus dorsi", "Posterior deltoid"],
+    bestFor: "Postural weakness, upper cross syndrome, desk worker rehab, scapular strengthening",
+    tips: [
+      "Sit tall throughout — don't round the back as you release the band.",
+      "Pull toward the lower ribs, not the chin — this targets the mid-back better.",
+      "The slow release is as important as the pull for building postural endurance.",
+    ],
   },
 
   // === ELBOW EXERCISES ===
@@ -686,6 +952,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 15,
+    targetMuscles: ["Extensor carpi radialis brevis", "Extensor carpi radialis longus", "Common wrist extensors"],
+    bestFor: "Lateral epicondylitis (tennis elbow), extensor tendinopathy, gripping pain rehabilitation",
+    tips: [
+      "The eccentric (lowering) phase is the therapeutic part — take a full 5 seconds.",
+      "Use the other hand to lift back up — this avoids concentric loading of the painful tendon.",
+      "Some discomfort (up to 4/10 pain) during exercise is acceptable; sharp pain is not.",
+    ],
   },
   {
     id: "ex40",
@@ -702,6 +975,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 4,
     holdSeconds: 30,
+    targetMuscles: ["Common wrist extensors", "Extensor carpi radialis brevis"],
+    bestFor: "Acute lateral epicondylitis (pain-dominant phase), early tendon loading, pain management through isometrics",
+    tips: [
+      "Isometrics are the first-line exercise for painful tendons — they provide pain relief.",
+      "Start with just gravity resistance; add a light weight only when pain-free.",
+      "Perform multiple times per day (3-5 times) for optimal pain relief.",
+    ],
   },
   {
     id: "ex41",
@@ -719,6 +999,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 15,
+    targetMuscles: ["Supinator", "Pronator teres", "Biceps brachii (supination component)"],
+    bestFor: "Post elbow fracture/dislocation, elbow stiffness, forearm rotation restriction after casting",
+    tips: [
+      "The hammer creates a lever that provides gentle resistance through the range.",
+      "Hold the hammer at different lengths to vary the resistance.",
+      "Keep the elbow pinned to your side — only the forearm should rotate.",
+    ],
   },
 
   // === WRIST EXERCISES ===
@@ -738,6 +1025,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 5,
     holdSeconds: 15,
+    targetMuscles: ["Abductor pollicis longus (APL)", "Extensor pollicis brevis (EPB)"],
+    bestFor: "De Quervain's tenosynovitis, thumb/wrist pain from repetitive gripping, new parent thumb pain",
+    tips: [
+      "This is also a diagnostic test — if it reproduces sharp pain, it suggests De Quervain's.",
+      "Be gentle — overstretching can aggravate the inflamed tendons.",
+      "Combine with ice and relative rest for best results in the acute phase.",
+    ],
   },
   {
     id: "ex43",
@@ -755,6 +1049,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 5,
     holdSeconds: 3,
+    targetMuscles: ["Flexor digitorum superficialis", "Flexor digitorum profundus", "Intrinsic hand muscles"],
+    bestFor: "Carpal tunnel syndrome, post hand/wrist surgery, trigger finger, tendon adhesion prevention",
+    tips: [
+      "Each position targets different tendon glide patterns — don't skip any.",
+      "Perform before and after activities that aggravate symptoms.",
+      "Often prescribed alongside nerve gliding exercises for carpal tunnel.",
+    ],
   },
   {
     id: "ex44",
@@ -773,6 +1074,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 12,
     holdSeconds: 3,
+    targetMuscles: ["Flexor digitorum superficialis/profundus", "Forearm flexors", "Intrinsic hand muscles"],
+    bestFor: "Post wrist fracture rehab, grip weakness, hand OA, return to manual work",
+    tips: [
+      "Therapy putty comes in graded resistances (colour-coded) — start soft and progress.",
+      "Vary the grip: full fist, pinch, spread, and finger extension for comprehensive rehab.",
+      "Avoid pain — if squeezing hurts, use a softer putty grade.",
+    ],
   },
 
   // === CORE EXERCISES ===
@@ -792,6 +1100,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 10,
     holdSeconds: 10,
+    targetMuscles: ["Transversus abdominis", "Internal obliques", "Pelvic floor"],
+    bestFor: "Low back pain foundation exercise, post-partum core recovery, pre-surgical prehab, pelvic floor dysfunction",
+    tips: [
+      "This is a subtle contraction (10-20% effort) — if you're bracing hard, you're using the wrong muscles.",
+      "You should be able to breathe normally while holding the contraction.",
+      "Use a pressure biofeedback unit under the lumbar spine for feedback if available.",
+    ],
   },
   {
     id: "ex46",
@@ -809,6 +1124,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Rectus abdominis", "Transversus abdominis", "Internal/external obliques", "Erector spinae"],
+    bestFor: "General core stability, athletic performance base, low back pain prevention, posture improvement",
+    tips: [
+      "Quality over duration — a 30-second perfect plank beats a 2-minute saggy one.",
+      "Squeeze glutes and brace abs simultaneously — this creates true trunk stability.",
+      "Start from the knees if a full plank causes back pain or form breakdown.",
+    ],
   },
   {
     id: "ex47",
@@ -828,6 +1150,13 @@ export const mockExercises: Exercise[] = [
     sets: 3,
     reps: 10,
     holdSeconds: 3,
+    targetMuscles: ["Internal/external obliques", "Transversus abdominis", "Rectus abdominis", "Quadratus lumborum"],
+    bestFor: "Rotational sport rehab (golf, tennis, cricket), lumbar disc protection, advanced core stability progression",
+    tips: [
+      "The challenge increases the further you press out — start with shorter presses if needed.",
+      "Resist the urge to rotate — the whole point is anti-rotation stability.",
+      "Can be performed in half-kneeling, tall kneeling, or standing positions for variety.",
+    ],
   },
 
   // === FULL BODY EXERCISES ===
@@ -847,6 +1176,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 10,
+    targetMuscles: ["Quadriceps", "Gluteus maximus", "Deltoids", "Triceps", "Core"],
+    bestFor: "Functional fitness, return to sport conditioning, time-efficient total body strengthening",
+    tips: [
+      "The press should flow from the squat — use the momentum from standing.",
+      "Keep the core braced throughout to protect the spine during the overhead press.",
+      "Start with light weights to master the coordination before loading up.",
+    ],
   },
   {
     id: "ex49",
@@ -862,6 +1198,13 @@ export const mockExercises: Exercise[] = [
       "Gradually increase your duration by 5 minutes per week as tolerated.",
     ],
     duration: "20 minutes",
+    targetMuscles: ["Cardiovascular system", "Lower limb musculature (general)", "Core stabilisers"],
+    bestFor: "Deconditioning, post-surgical general recovery, chronic pain management, cardiovascular health",
+    tips: [
+      "The 'talk test' is a good intensity guide — you should be able to hold a conversation.",
+      "Increase duration before intensity — add 5 minutes per week maximum.",
+      "Walk on flat ground initially; add hills as fitness improves.",
+    ],
   },
   {
     id: "ex50",
@@ -878,6 +1221,13 @@ export const mockExercises: Exercise[] = [
       "Keep your posture upright and avoid gripping the handlebars too tightly.",
     ],
     duration: "15 minutes",
+    targetMuscles: ["Quadriceps", "Hamstrings", "Gluteals", "Cardiovascular system"],
+    bestFor: "Post knee/hip surgery cardiovascular maintenance, ACL rehab ROM recovery, low-impact fitness",
+    tips: [
+      "Seat height is critical — too low increases knee stress, too high causes hip rocking.",
+      "Low resistance, high cadence is easier on joints than high resistance, low cadence.",
+      "The bike is excellent for early ACL rehab — it promotes knee ROM in a safe arc.",
+    ],
   },
   {
     id: "ex51",
@@ -896,6 +1246,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 2,
     reps: 3,
+    targetMuscles: ["Deltoids", "Rotator cuff", "Core (all layers)", "Gluteals", "Quadriceps"],
+    bestFor: "Shoulder stability (late-stage), functional movement screening, total body coordination, athletic rehab",
+    tips: [
+      "Learn the movement without weight first — it's complex and technique-dependent.",
+      "Break it into segments: floor to elbow, elbow to hand, hand to kneeling, kneeling to standing.",
+      "Eyes stay on the weight at all times — this maintains shoulder packing.",
+    ],
   },
   {
     id: "ex52",
@@ -913,6 +1270,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     reps: 10,
+    targetMuscles: ["Hamstrings", "Gluteus maximus", "Gluteus medius (stability)", "Erector spinae"],
+    bestFor: "Hamstring strain rehab (late stage), ACL injury prevention, running performance, single-leg stability",
+    tips: [
+      "Think of your body as a see-saw — as the trunk goes down, the leg goes up.",
+      "Keep the hips level — don't let the back hip rotate open.",
+      "Hold the weight in the opposite hand to the standing leg for balance.",
+    ],
   },
   {
     id: "ex53",
@@ -929,6 +1293,13 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Piriformis", "Gemelli", "Obturator internus", "Quadratus femoris"],
+    bestFor: "Piriformis syndrome, sciatic-type buttock pain, hip external rotator tightness, post prolonged sitting",
+    tips: [
+      "Pull the uncrossed leg toward you — this controls the intensity of the stretch.",
+      "Keep the crossed leg relaxed — don't actively push the knee away.",
+      "If you can't reach through to grab the thigh, use a towel around it.",
+    ],
   },
   {
     id: "ex54",
@@ -945,5 +1316,12 @@ export const mockExercises: Exercise[] = [
     ],
     sets: 3,
     holdSeconds: 30,
+    targetMuscles: ["Pectoralis major", "Pectoralis minor", "Anterior deltoid"],
+    bestFor: "Upper cross syndrome, desk worker posture correction, post-mastectomy rehab, rounded shoulder correction",
+    tips: [
+      "Arm at shoulder height targets the middle pec fibres; higher targets the lower fibres.",
+      "Keep the shoulder blade retracted — don't let the shoulder roll forward.",
+      "Step through the doorway to control the stretch intensity.",
+    ],
   },
 ];

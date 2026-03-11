@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { FileText, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { useNoteStore } from "@/stores/note-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { useNotes } from "@/hooks/use-notes";
+import { usePatients } from "@/hooks/use-patients";
 
 export function RecentNotes() {
-  const notes = useNoteStore((state) => state.notes);
-  const getPatientById = usePatientStore((state) => state.getPatientById);
+  const { data: notes = [], isLoading: loadingNotes } = useNotes();
+  const { data: patients = [] } = usePatients();
+  const getPatientById = (id: string) => patients.find((p) => p.id === id);
 
   // Sort by createdAt descending and take latest 5
   const recentNotes = [...notes]
@@ -38,7 +39,19 @@ export function RecentNotes() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {recentNotes.length === 0 ? (
+        {loadingNotes ? (
+          <div className="space-y-3 py-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex gap-4">
+                <div className="h-9 w-9 shrink-0 rounded-lg bg-muted animate-pulse" />
+                <div className="flex flex-col gap-1 flex-1">
+                  <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+                  <div className="h-3 w-full rounded bg-muted animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : recentNotes.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
             No notes yet.
           </p>

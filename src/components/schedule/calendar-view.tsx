@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useAppointmentStore } from "@/stores/appointment-store";
+import { useAppointments, useUpdateAppointment } from "@/hooks/use-appointments";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,8 +87,8 @@ function getInitials(name: string) {
 }
 
 export function CalendarView() {
-  const appointments = useAppointmentStore((state) => state.appointments);
-  const updateAppointment = useAppointmentStore((state) => state.updateAppointment);
+  const { data: appointments = [], isLoading } = useAppointments();
+  const updateAppointment = useUpdateAppointment();
   const [selectedEvent, setSelectedEvent] = useState<Appointment | null>(null);
 
   const events = useMemo(() => {
@@ -119,16 +119,28 @@ export function CalendarView() {
 
   function handleMarkComplete() {
     if (selectedEvent) {
-      updateAppointment(selectedEvent.id, { status: "completed" });
-      setSelectedEvent(null);
+      updateAppointment.mutate(
+        { id: selectedEvent.id, data: { status: "completed" } },
+        { onSuccess: () => setSelectedEvent(null) }
+      );
     }
   }
 
   function handleCancelAppointment() {
     if (selectedEvent) {
-      updateAppointment(selectedEvent.id, { status: "cancelled" });
-      setSelectedEvent(null);
+      updateAppointment.mutate(
+        { id: selectedEvent.id, data: { status: "cancelled" } },
+        { onSuccess: () => setSelectedEvent(null) }
+      );
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="rounded-xl bg-card ring-1 ring-foreground/10 p-4 flex items-center justify-center py-16">
+        <p className="text-sm text-muted-foreground">Loading schedule...</p>
+      </div>
+    );
   }
 
   return (

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ProfileTabs } from "@/components/patients/profile-tabs";
-import { usePatientStore } from "@/stores/patient-store";
+import { usePatient } from "@/hooks/use-patients";
 
 const statusVariant: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
   active: "default",
@@ -31,7 +31,15 @@ export default function PatientProfilePage({
 }) {
   const { id } = use(params);
   const router = useRouter();
-  const patient = usePatientStore((s) => s.getPatientById(id));
+  const { data: patient, isLoading } = usePatient(id);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <p className="text-sm text-muted-foreground">Loading patient...</p>
+      </div>
+    );
+  }
 
   if (!patient) {
     return (

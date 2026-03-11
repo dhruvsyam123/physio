@@ -1,41 +1,46 @@
-import { usePatientStore } from "@/stores/patient-store";
-import { useNoteStore } from "@/stores/note-store";
-import { usePlanStore } from "@/stores/plan-store";
-import { useAppointmentStore } from "@/stores/appointment-store";
+import { prisma } from "@/lib/prisma";
 
-function calculateAge(dob: string): number {
-  const birth = new Date(dob);
+function calculateAge(dob: Date): number {
   const today = new Date();
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+  let age = today.getFullYear() - dob.getFullYear();
+  const monthDiff = today.getMonth() - dob.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
     age--;
   }
   return age;
 }
 
-export function buildPatientContext(patientId: string): string {
-  const patient = usePatientStore.getState().getPatientById(patientId);
+export async function buildPatientContext(patientId: string): Promise<string> {
+  const patient = await prisma.patient.findUnique({
+    where: { id: patientId },
+  });
   if (!patient) return "Patient not found.";
 
-  const notes = useNoteStore.getState().getNotesByPatient(patientId);
-  const plans = usePlanStore.getState().getPlansByPatient(patientId);
-  const appointments = useAppointmentStore.getState().getAppointmentsByPatient(patientId);
+  const notes = await prisma.sOAPNote.findMany({
+    where: { patientId },
+    orderBy: { createdAt: "desc" },
+    take: 2,
+  });
+
+  const plans = await prisma.treatmentPlan.findMany({
+    where: { patientId },
+    include: { phases: true },
+  });
+
+  const appointments = await prisma.appointment.findMany({
+    where: { patientId },
+  });
 
   const age = calculateAge(patient.dateOfBirth);
 
   // Last 2 SOAP note summaries
-  const sortedNotes = [...notes].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-  const recentNotes = sortedNotes.slice(0, 2);
-  const noteSummaries = recentNotes
+  const noteSummaries = notes
     .map((n, i) => {
       const truncatedAssessment =
         n.assessment.length > 150
           ? n.assessment.substring(0, 150) + "..."
           : n.assessment;
-      return `  Note ${i + 1} (${n.date}): ${truncatedAssessment}`;
+      return `  Note ${i + 1} (${n.date.toISOString().split("T")[0]}): ${truncatedAssessment}`;
     })
     .join("\n");
 
@@ -44,7 +49,7 @@ export function buildPatientContext(patientId: string): string {
   let planInfo = "No active treatment plan.";
   if (activePlan) {
     const currentWeek = Math.ceil(
-      (new Date().getTime() - new Date(activePlan.createdAt).getTime()) /
+      (new Date().getTime() - activePlan.createdAt.getTime()) /
         (7 * 24 * 60 * 60 * 1000)
     );
     const currentPhase = activePlan.phases.find(
@@ -58,14 +63,14 @@ export function buildPatientContext(patientId: string): string {
   const futureAppointments = appointments
     .filter(
       (a) =>
-        new Date(a.date) >= now &&
+        a.date >= now &&
         a.status !== "cancelled" &&
         a.status !== "completed"
     )
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
   const nextAppt = futureAppointments[0];
   const nextApptStr = nextAppt
-    ? `${nextAppt.date} at ${nextAppt.startTime} (${nextAppt.type})`
+    ? `${nextAppt.date.toISOString().split("T")[0]} at ${nextAppt.startTime} (${nextAppt.type})`
     : "No upcoming appointments";
 
   const lines = [

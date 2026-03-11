@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Clock, ArrowRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useAppointmentStore } from "@/stores/appointment-store";
+import { useAppointments } from "@/hooks/use-appointments";
 import type { Appointment } from "@/types";
 
 const typeLabels: Record<Appointment["type"], string> = {
@@ -34,7 +34,7 @@ const statusLabels: Record<Appointment["status"], string> = {
 };
 
 export function TodaysSchedule() {
-  const appointments = useAppointmentStore((state) => state.appointments);
+  const { data: appointments = [], isLoading } = useAppointments();
 
   const today = "2026-03-11";
   const todaysAppointments = appointments
@@ -50,7 +50,19 @@ export function TodaysSchedule() {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        {todaysAppointments.length === 0 ? (
+        {isLoading ? (
+          <div className="space-y-3 py-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="h-4 w-16 rounded bg-muted animate-pulse" />
+                <div className="flex flex-col gap-1 flex-1">
+                  <div className="h-4 w-32 rounded bg-muted animate-pulse" />
+                  <div className="h-3 w-20 rounded bg-muted animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : todaysAppointments.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
             No appointments scheduled for today.
           </p>

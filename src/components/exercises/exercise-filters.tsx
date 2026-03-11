@@ -12,20 +12,6 @@ import {
 } from "@/components/ui/select";
 import type { Exercise } from "@/types";
 
-const bodyRegions: Exercise["bodyRegion"][] = [
-  "neck",
-  "shoulder",
-  "upper-back",
-  "lower-back",
-  "hip",
-  "knee",
-  "ankle",
-  "wrist",
-  "elbow",
-  "core",
-  "full-body",
-];
-
 const categories: Exercise["category"][] = [
   "strengthening",
   "stretching",
@@ -80,20 +66,19 @@ export function ExerciseFilters({
         />
       </div>
 
-      {/* Body Region */}
-      <Select value={region} onValueChange={(v) => onRegionChange(v ?? "all")}>
-        <SelectTrigger className="w-auto">
-          <SelectValue placeholder="Body Region" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Regions</SelectItem>
-          {bodyRegions.map((r) => (
-            <SelectItem key={r} value={r}>
-              {r.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {/* Active region badge */}
+      {region !== "all" && (
+        <div className="flex items-center gap-1.5 rounded-full bg-teal-100 dark:bg-teal-900 px-3 py-1.5 text-xs font-medium text-teal-800 dark:text-teal-200">
+          <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+          {region.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+          <button
+            onClick={() => onRegionChange("all")}
+            className="ml-1 hover:text-teal-600 dark:hover:text-teal-300"
+          >
+            ×
+          </button>
+        </div>
+      )}
 
       {/* Category */}
       <Select value={category} onValueChange={(v) => onCategoryChange(v ?? "all")}>

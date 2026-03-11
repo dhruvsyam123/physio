@@ -5,11 +5,11 @@ import { FileText, Printer, Lock, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { usePatientStore } from "@/stores/patient-store";
-import { useNoteStore } from "@/stores/note-store";
-import { usePlanStore } from "@/stores/plan-store";
-import { useAppointmentStore } from "@/stores/appointment-store";
-import { useOutcomeStore } from "@/stores/outcome-store";
+import { usePatient } from "@/hooks/use-patients";
+import { useNotesByPatient } from "@/hooks/use-notes";
+import { usePlansByPatient } from "@/hooks/use-plans";
+import { useAppointmentsByPatient } from "@/hooks/use-appointments";
+import { useOutcomesByPatient } from "@/hooks/use-outcomes";
 import { outcomeDefinitions } from "@/data/outcomes";
 import type { MeasureType } from "@/types/outcomes";
 
@@ -23,15 +23,11 @@ function formatDate(dateStr?: string) {
 }
 
 export function ProgressReport({ patientId }: { patientId: string }) {
-  const patient = usePatientStore((s) => s.getPatientById(patientId));
-  const allNotes = useNoteStore((s) => s.notes);
-  const notes = useMemo(() => allNotes.filter((n) => n.patientId === patientId), [allNotes, patientId]);
-  const allPlans = usePlanStore((s) => s.plans);
-  const plans = useMemo(() => allPlans.filter((p) => p.patientId === patientId), [allPlans, patientId]);
-  const allAppointments = useAppointmentStore((s) => s.appointments);
-  const appointments = useMemo(() => allAppointments.filter((a) => a.patientId === patientId), [allAppointments, patientId]);
-  const allOutcomes = useOutcomeStore((s) => s.outcomes);
-  const outcomes = useMemo(() => allOutcomes.filter((o) => o.patientId === patientId), [allOutcomes, patientId]);
+  const { data: patient } = usePatient(patientId);
+  const { data: notes = [] } = useNotesByPatient(patientId);
+  const { data: plans = [] } = usePlansByPatient(patientId);
+  const { data: appointments = [] } = useAppointmentsByPatient(patientId);
+  const { data: outcomes = [] } = useOutcomesByPatient(patientId);
 
   const [generated, setGenerated] = useState(false);
   const [signed, setSigned] = useState(false);

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateContent } from "@/lib/ai";
 import { DRAFT_MESSAGE_PROMPT } from "@/lib/ai-prompts";
+import { auth } from "@/lib/auth";
 
 function getFallbackDraft(
   patientName: string,
@@ -36,6 +37,11 @@ function getFallbackDraft(
 }
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { patientName, condition, lastMessage, context } = await req.json();
 

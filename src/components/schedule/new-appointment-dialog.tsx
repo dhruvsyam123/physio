@@ -22,8 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAppointmentStore } from "@/stores/appointment-store";
-import { usePatientStore } from "@/stores/patient-store";
+import { useCreateAppointment } from "@/hooks/use-appointments";
+import { usePatients } from "@/hooks/use-patients";
 import { toast } from "sonner";
 import type { Appointment } from "@/types";
 
@@ -36,8 +36,8 @@ const appointmentTypes: { value: Appointment["type"]; label: string }[] = [
 ];
 
 export function NewAppointmentDialog() {
-  const patients = usePatientStore((state) => state.patients);
-  const addAppointment = useAppointmentStore((state) => state.addAppointment);
+  const { data: patients = [] } = usePatients();
+  const createAppointment = useCreateAppointment();
   const [open, setOpen] = useState(false);
 
   const [patientId, setPatientId] = useState("");
@@ -75,10 +75,13 @@ export function NewAppointmentDialog() {
       notes: notes || undefined,
     };
 
-    addAppointment(appointment);
-    toast.success("Appointment scheduled successfully");
-    resetForm();
-    setOpen(false);
+    createAppointment.mutate(appointment, {
+      onSuccess: () => {
+        toast.success("Appointment scheduled successfully");
+        resetForm();
+        setOpen(false);
+      },
+    });
   }
 
   return (

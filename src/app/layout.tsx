@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import { Inter, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { Header } from "@/components/layout/header";
-import { MobileNav } from "@/components/layout/mobile-nav";
-import { MainContentInner } from "@/components/layout/main-content";
-import { AIAssistantPanel } from "@/components/ai/ai-assistant-panel";
-import { AITrigger } from "@/components/ai/ai-trigger";
+import { AppShell } from "@/components/layout/app-shell";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,28 +38,7 @@ export default function RootLayout({
         className={`${inter.variable} ${dmSans.variable} font-sans antialiased`}
       >
         <Providers>
-          <div className="relative flex min-h-screen">
-            {/* Desktop sidebar */}
-            <AppSidebar />
-
-            {/* Main content area - offset by sidebar width */}
-            <MainContentInner>
-              {/* Top header */}
-              <Header />
-
-              {/* Page content */}
-              <main className="flex-1 overflow-auto pb-20 md:pb-0">
-                {children}
-              </main>
-            </MainContentInner>
-
-            {/* Mobile bottom navigation */}
-            <MobileNav />
-
-            {/* AI Assistant */}
-            <AIAssistantPanel />
-            <AITrigger />
-          </div>
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>

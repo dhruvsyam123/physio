@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversation, useSendMessage, useMarkConversationRead } from "@/hooks/use-conversations";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -50,11 +50,9 @@ const patientResponses = [
 ];
 
 export function MessageThread({ conversationId }: MessageThreadProps) {
-  const conversation = useMessageStore((state) =>
-    state.getConversationById(conversationId)
-  );
-  const addMessage = useMessageStore((state) => state.addMessage);
-  const markAsRead = useMessageStore((state) => state.markAsRead);
+  const { data: conversation } = useConversation(conversationId);
+  const sendMessage = useSendMessage();
+  const markRead = useMarkConversationRead();
 
   const [input, setInput] = useState("");
   const [aiDrafting, setAiDrafting] = useState(false);
@@ -67,9 +65,9 @@ export function MessageThread({ conversationId }: MessageThreadProps) {
 
   useEffect(() => {
     if (conversation && conversation.unreadCount > 0) {
-      markAsRead(conversationId);
+      markRead.mutate(conversationId);
     }
-  }, [conversationId, conversation, markAsRead]);
+  }, [conversationId, conversation, markRead]);
 
   if (!conversation) {
     return (
@@ -109,39 +107,36 @@ export function MessageThread({ conversationId }: MessageThreadProps) {
   function handleSend() {
     if (!input.trim()) return;
 
-    const message = {
-      id: `msg-${Date.now()}`,
-      conversationId,
-      senderId: "therapist1",
-      senderName: "Dr. Sarah Thompson",
-      senderRole: "therapist" as const,
-      content: input.trim(),
-      timestamp: new Date().toISOString(),
-      read: true,
-    };
-
-    addMessage(conversationId, message);
-    setInput("");
-    toast.success("Message sent");
-
-    // Simulate patient typing and response
-    setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      const randomResponse =
-        patientResponses[Math.floor(Math.random() * patientResponses.length)];
-      const patientMessage = {
-        id: `msg-${Date.now()}-p`,
+    sendMessage.mutate(
+      {
         conversationId,
-        senderId: conversation!.patientId,
-        senderName: conversation!.patientName,
-        senderRole: "patient" as const,
-        content: randomResponse,
-        timestamp: new Date().toISOString(),
-        read: true,
-      };
-      addMessage(conversationId, patientMessage);
-    }, 2000);
+        content: input.trim(),
+        senderId: "therapist1",
+        senderName: "Dr. Sarah Thompson",
+        senderRole: "therapist",
+      },
+      {
+        onSuccess: () => {
+          setInput("");
+          toast.success("Message sent");
+
+          // Simulate patient typing and response
+          setTyping(true);
+          setTimeout(() => {
+            setTyping(false);
+            const randomResponse =
+              patientResponses[Math.floor(Math.random() * patientResponses.length)];
+            sendMessage.mutate({
+              conversationId,
+              content: randomResponse,
+              senderId: conversation!.patientId,
+              senderName: conversation!.patientName,
+              senderRole: "patient",
+            });
+          }, 2000);
+        },
+      }
+    );
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {

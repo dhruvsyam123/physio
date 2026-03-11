@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateContent } from "@/lib/ai";
 import { PARSE_REFERRAL_PROMPT } from "@/lib/ai-prompts";
+import { auth } from "@/lib/auth";
 
 function getFallbackParsedReferral(referralText: string) {
   const text = referralText.toLowerCase();
@@ -104,6 +105,11 @@ function getFallbackParsedReferral(referralText: string) {
 }
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { referralText } = await req.json();
 
