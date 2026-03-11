@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PhysioAI
+
+A clinical-first physiotherapy practice management platform built to eliminate admin overhead and let physios focus on patient care.
+
+## Features
+
+- **AI-Powered SOAP Notes** — Fill in Subjective + Objective, AI generates Assessment & Plan with streaming typewriter effect. Ghost text auto-suggest, condition templates, and clinical terminology autocomplete.
+- **Treatment Plan Builder** — Multi-phase drag-and-drop programme builder with cross-phase reordering, exercise search via command palette, AI progression suggestions, and Home Exercise Program (HEP) generation.
+- **Progress Tracking & Outcome Measures** — VAS pain scores, ROM measurements, functional outcome trends with interactive charts. AI-generated progress summaries and discharge readiness tracking.
+- **Clinical Documentation** — CPT code auto-suggestions with 8-minute rule calculator, Medicare-compliant progress report generation, discharge planning with criteria checklists, and digital intake forms with interactive body map.
+- **Smart Dashboard** — Proactive AI clinical insights, upcoming patient strip, KPI cards, and schedule recommendations.
+- **Secure Messaging** — Patient communication with read receipts, typing indicators, and AI-assisted message drafting.
+- **Scheduling** — Weekly/daily calendar view with appointment management, smart gap-fill suggestions, and attendance pattern analysis.
+- **Referral Management** — AI-powered referral letter parsing that auto-extracts patient data and creates records.
+- **Command Palette** — Global `Cmd+K` search across patients, exercises, and quick actions.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS v4 with oklch color system
+- **State**: Zustand
+- **UI Components**: shadcn/ui, Radix primitives, cmdk
+- **Charts**: Recharts
+- **Calendar**: FullCalendar
+- **AI**: Google Gemini API
+- **Fonts**: Inter (body) + DM Sans (display)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/           # Next.js App Router pages and API routes
+  components/    # React components organized by feature
+  stores/        # Zustand state stores
+  data/          # Mock data for development
+  lib/           # Utilities and AI context helpers
+  types/         # TypeScript type definitions
+```
